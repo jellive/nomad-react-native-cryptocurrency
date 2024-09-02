@@ -45,6 +45,7 @@ const Join = () => {
   const onSubmitPasswordEditing = async () => {
     if (email === '' || password === '') Alert.alert('Fill in the form.')
     if (loading) return
+    setLoading(true)
     const userCredential = await auth()
       .createUserWithEmailAndPassword(email, password)
       .catch(err => {
