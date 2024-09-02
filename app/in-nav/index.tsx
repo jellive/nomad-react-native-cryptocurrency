@@ -49,7 +49,9 @@ const Home = () => {
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
         columnWrapperStyle={{ justifyContent: 'space-between' }} // contentContainerStyle과는 다르게 한 열을 꾸밀 수 있음.
         keyExtractor={item => item.id}
-        renderItem={({ item }) => <Coin symbol={item.symbol} />}
+        renderItem={({ item, index }) => (
+          <Coin symbol={item.symbol} index={index} />
+        )}
       />
     </Container>
   )

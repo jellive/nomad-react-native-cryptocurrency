@@ -1,8 +1,8 @@
-import React, { useRef } from 'react'
-import { Animated } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { Animated, View } from 'react-native'
 import styled from 'styled-components/native'
 
-const Wrapper = styled.View`
+const Wrapper = styled(Animated.createAnimatedComponent(View))`
   border-radius: 5px;
   align-items: center;
   justify-content: center;
@@ -24,10 +24,17 @@ const Icon = styled.Image`
   margin-bottom: 10px;
 `
 
-const Coin = ({ symbol }: { symbol: string }) => {
+const Coin = ({ symbol, index }: { symbol: string; index: number }) => {
   const opacity = useRef(new Animated.Value(0)).current
+  useEffect(() => {
+    Animated.spring(opacity, {
+      toValue: 1,
+      useNativeDriver: true,
+      delay: index * 200
+    }).start()
+  }, [])
   return (
-    <Wrapper style={{ flex: 0.31 }}>
+    <Wrapper style={{ flex: 0.31, opacity }}>
       <Icon
         source={{
           uri: `https://cryptoicon-api.pages.dev/api/icon/${symbol.toLowerCase()}`
