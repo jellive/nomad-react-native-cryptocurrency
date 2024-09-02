@@ -30,11 +30,15 @@ const Coin = ({ symbol, index }: { symbol: string; index: number }) => {
     Animated.spring(opacity, {
       toValue: 1,
       useNativeDriver: true,
-      delay: index * 200
+      delay: index * 100
     }).start()
   }, [])
+  const scale = opacity.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.7, 1]
+  })
   return (
-    <Wrapper style={{ flex: 0.31, opacity }}>
+    <Wrapper style={{ flex: 0.31, opacity, transform: [{ scale }] }}>
       <Icon
         source={{
           uri: `https://cryptoicon-api.pages.dev/api/icon/${symbol.toLowerCase()}`
