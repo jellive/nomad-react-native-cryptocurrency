@@ -12,6 +12,7 @@ import auth from '@react-native-firebase/auth'
 
 import { useColorScheme } from '@/hooks/useColorScheme'
 import { BLACK_COLOR } from '@/utils/colors'
+import InNav from './in-nav/_layout'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -24,7 +25,6 @@ export default function RootLayout() {
     auth().onAuthStateChanged(user => {
       if (user) {
         setIsLoggedIn(true)
-        router.replace('./in-nav/')
       } else {
         setIsLoggedIn(false)
       }
@@ -45,7 +45,9 @@ export default function RootLayout() {
     return null
   }
 
-  return (
+  return isLoggedIn ? (
+    <InNav />
+  ) : (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack
         screenOptions={{
