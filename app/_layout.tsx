@@ -13,6 +13,9 @@ import auth from '@react-native-firebase/auth'
 import { useColorScheme } from '@/hooks/useColorScheme'
 import { BLACK_COLOR } from '@/utils/colors'
 import InNav from './in-nav/_layout'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+const queryClient = new QueryClient()
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -45,24 +48,28 @@ export default function RootLayout() {
     return null
   }
 
-  return isLoggedIn ? (
-    <InNav />
-  ) : (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack
-        screenOptions={{
-          presentation: 'modal',
-          headerTintColor: 'white',
-          headerStyle: {
-            backgroundColor: BLACK_COLOR
-          }
-        }}
-      >
-        <Stack.Screen name="Login" />
-        <Stack.Screen name="index" />
-        <Stack.Screen name="Join" />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        {isLoggedIn ? (
+          <InNav />
+        ) : (
+          <Stack
+            screenOptions={{
+              presentation: 'modal',
+              headerTintColor: 'white',
+              headerStyle: {
+                backgroundColor: BLACK_COLOR
+              }
+            }}
+          >
+            <Stack.Screen name="Login" />
+            <Stack.Screen name="index" />
+            <Stack.Screen name="Join" />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        )}
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }
