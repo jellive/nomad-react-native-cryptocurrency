@@ -14,6 +14,7 @@ import { useColorScheme } from '@/hooks/useColorScheme'
 import { BLACK_COLOR } from '@/utils/colors'
 import InNav from './in-nav/_layout'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const queryClient = new QueryClient()
 
@@ -49,27 +50,31 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        {isLoggedIn ? (
-          <InNav />
-        ) : (
-          <Stack
-            screenOptions={{
-              presentation: 'modal',
-              headerTintColor: 'white',
-              headerStyle: {
-                backgroundColor: BLACK_COLOR
-              }
-            }}
-          >
-            <Stack.Screen name="Login" />
-            <Stack.Screen name="index" />
-            <Stack.Screen name="Join" />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        )}
-      </ThemeProvider>
-    </QueryClientProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider
+          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
+          {isLoggedIn ? (
+            <InNav />
+          ) : (
+            <Stack
+              screenOptions={{
+                presentation: 'modal',
+                headerTintColor: 'white',
+                headerStyle: {
+                  backgroundColor: BLACK_COLOR
+                }
+              }}
+            >
+              <Stack.Screen name="Login" />
+              <Stack.Screen name="index" />
+              <Stack.Screen name="Join" />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          )}
+        </ThemeProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   )
 }
