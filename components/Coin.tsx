@@ -10,7 +10,7 @@ const Wrapper = styled(Animated.createAnimatedComponent(View))`
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.1);
-  height: 54px;
+  padding: 10px;
 `
 const CoinName = styled.Text`
   color: white;
@@ -46,7 +46,7 @@ const Coin = ({ symbol, index }: { symbol: string; index: number }) => {
       style={{ flex: 0.31 }}
       onPress={() => navigation.navigate('detail')}
     >
-      <Wrapper style={{ flex: 0.31, opacity, transform: [{ scale }] }}>
+      <Wrapper style={{ opacity, transform: [{ scale }] }}>
         <Icon
           source={{
             uri: `https://cryptoicon-api.pages.dev/api/icon/${symbol.toLowerCase()}`
