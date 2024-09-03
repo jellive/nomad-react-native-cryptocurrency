@@ -1,5 +1,8 @@
+import Detail from '@/app/in-nav/detail'
+import { useNavigation } from '@react-navigation/native'
+import { router } from 'expo-router'
 import React, { useEffect, useRef } from 'react'
-import { Animated, View } from 'react-native'
+import { Animated, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components/native'
 
 const Wrapper = styled(Animated.createAnimatedComponent(View))`
@@ -25,6 +28,7 @@ const Icon = styled.Image`
 `
 
 const Coin = ({ symbol, index }: { symbol: string; index: number }) => {
+  const navigation = useNavigation() // react-navigation안에 있으므로.
   const opacity = useRef(new Animated.Value(0)).current
   useEffect(() => {
     Animated.spring(opacity, {
@@ -38,14 +42,19 @@ const Coin = ({ symbol, index }: { symbol: string; index: number }) => {
     outputRange: [0.7, 1]
   })
   return (
-    <Wrapper style={{ flex: 0.31, opacity, transform: [{ scale }] }}>
-      <Icon
-        source={{
-          uri: `https://cryptoicon-api.pages.dev/api/icon/${symbol.toLowerCase()}`
-        }}
-      />
-      <CoinSymbol>{symbol}</CoinSymbol>
-    </Wrapper>
+    <TouchableOpacity
+      style={{ flex: 0.31 }}
+      onPress={() => navigation.navigate('detail')}
+    >
+      <Wrapper style={{ flex: 0.31, opacity, transform: [{ scale }] }}>
+        <Icon
+          source={{
+            uri: `https://cryptoicon-api.pages.dev/api/icon/${symbol.toLowerCase()}`
+          }}
+        />
+        <CoinSymbol>{symbol}</CoinSymbol>
+      </Wrapper>
+    </TouchableOpacity>
   )
 }
 
