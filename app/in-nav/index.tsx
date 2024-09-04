@@ -29,6 +29,7 @@ const index = () => {
   const { isLoading, data } = useQuery('coins', coins)
   const [cleanData, setCleanData] = useState([])
   useEffect(() => {
+    console.log('data')
     if (data)
       setCleanData(
         data?.filter(coin => coin.rank != 0 && coin.is_active && !coin.is_new)

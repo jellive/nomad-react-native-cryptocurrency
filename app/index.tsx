@@ -1,15 +1,16 @@
-import React, { useCallback, useContext, useEffect } from 'react'
-import { Text } from 'react-native'
-import { SigninContext } from './_layout'
-import { router, Stack } from 'expo-router'
-import OutNav from './out-nav/index'
-import InNav from './in-nav/index'
+import { Redirect, useRootNavigationState } from 'expo-router'
+import React, { useContext } from 'react'
+import { View } from 'react-native'
+import { SignInContext } from './_layout'
 
 const Index = () => {
+  const rootNavigationState = useRootNavigationState()
+  const isSignin = useContext(SignInContext)
   //   useEffect(() => {
   //     setTimeout(() => router.replace(isSignin ? '/in-nav' : '/out-nav'), 1)
   //   }, [isSignin])
   //   return isSignin ? <InNav /> : <OutNav />
-  return <></>
+  if (!rootNavigationState?.key) return null
+  return <Redirect href={isSignin ? '/in-nav' : '/out-nav'} />
 }
 export default Index

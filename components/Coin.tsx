@@ -20,7 +20,7 @@ const CoinSymbol = styled.Text`
   font-weight: 500;
 `
 
-const Icon = styled.Image`
+export const Icon = styled.Image`
   border-radius: 20px;
   width: 40px;
   height: 40px;
