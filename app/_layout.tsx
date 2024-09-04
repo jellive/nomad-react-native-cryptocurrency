@@ -38,12 +38,9 @@ const queryClient = new QueryClient()
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
 
-export const SigninContext = createContext<boolean>(false)
-
 export default function RootLayout() {
   const colorScheme = useColorScheme()
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
-  const segments = useSegments()
   const rootIsReady = useRootNavigationState()
   const path = usePathname()
   const [passed, setPassed] = useState(false)
@@ -82,32 +79,32 @@ export default function RootLayout() {
     console.log('rootIsReady: isloggedIn', isLoggedIn)
     // if (rootIsReady?.routeNames?.includes('_sitemap'))
     setPassed(true)
-    router.replace(isLoggedIn ? '/in-nav' : '/out-nav')
+    router.replace(user ? '/in-nav' : '/out-nav')
     // setTimeout(() => router.replace(isLoggedIn ? '/in-nav' : '/out-nav'), 1500)
   }, [rootIsReady])
 
   useEffect(() => {
     if (!passed) return
-    router.replace(user ? '/in-nav' : '/out-nav')
+    if (rootIsReady?.routeNames?.includes('+not-found'))
+      router.replace(user ? '/in-nav' : '/out-nav')
   }, [user])
 
   if (!loaded) {
     return null
   }
+  console.log('hi?', rootIsReady, 'hihi!')
 
   return (
-    <SigninContext.Provider value={isLoggedIn}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider
-            value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-          >
-            <Slot />
-            {/* {isLoggedIn ? <InNav /> : <OutNav />} */}
-            {/* <Redirect href={isLoggedIn ? '/in-nav' : '/out-nav'} /> */}
-          </ThemeProvider>
-        </QueryClientProvider>
-      </GestureHandlerRootView>
-    </SigninContext.Provider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider
+          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
+          <Slot />
+          {/* {isLoggedIn ? <InNav /> : <OutNav />} */}
+          {/* <Redirect href={isLoggedIn ? '/in-nav' : '/out-nav'} /> */}
+        </ThemeProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   )
 }
