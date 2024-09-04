@@ -44,7 +44,6 @@ const index = () => {
   }
   return (
     <Container>
-      <Pressable onPress={() => auth().signOut()} style={{ height: 100 }} />
       <List
         data={cleanData}
         numColumns={3}
