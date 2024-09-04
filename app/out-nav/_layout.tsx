@@ -16,8 +16,6 @@ import InNav from '../in-nav/_layout'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
-const queryClient = new QueryClient()
-
 export default function OutNav() {
   const colorScheme = useColorScheme()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -28,6 +26,7 @@ export default function OutNav() {
 
   return (
     <Stack
+      initialRouteName="index"
       screenOptions={{
         presentation: 'modal',
         headerTintColor: 'white',

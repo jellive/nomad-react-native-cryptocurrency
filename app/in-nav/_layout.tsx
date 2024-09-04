@@ -18,6 +18,7 @@ const InNav = () => {
   }
   return (
     <Stack
+      initialRouteName="index"
       screenOptions={{
         presentation: 'modal',
         headerTintColor: 'white',

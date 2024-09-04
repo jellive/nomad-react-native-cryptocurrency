@@ -2,10 +2,11 @@ import { coins } from '@/apis'
 import Coin from '@/components/Coin'
 import { BLACK_COLOR } from '@/utils/colors'
 import React, { useEffect, useState } from 'react'
-import { View, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator, Pressable } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import { useQuery } from 'react-query'
 import styled from 'styled-components/native'
+import auth from '@react-native-firebase/auth'
 
 const Container = styled.View`
   background-color: ${BLACK_COLOR};
@@ -24,7 +25,7 @@ const Loader = styled.View`
   align-items: center;
 `
 
-const Home = () => {
+const index = () => {
   const { isLoading, data } = useQuery('coins', coins)
   const [cleanData, setCleanData] = useState([])
   useEffect(() => {
@@ -43,6 +44,7 @@ const Home = () => {
   }
   return (
     <Container>
+      <Pressable onPress={() => auth().signOut()} style={{ height: 100 }} />
       <List
         data={cleanData}
         numColumns={3}
@@ -57,4 +59,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default index

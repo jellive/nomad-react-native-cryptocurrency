@@ -5,9 +5,15 @@ import {
   useNavigation
 } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
-import { router, Stack } from 'expo-router'
+import { router, Slot, Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
-import { useCallback, useEffect, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react'
 import 'react-native-reanimated'
 import auth, { signOut } from '@react-native-firebase/auth'
 
@@ -16,13 +22,15 @@ import { BLACK_COLOR } from '@/utils/colors'
 import InNav from './in-nav/_layout'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import OutNav from './out-nav/_layout'
+import OutNav from './out-nav/index'
 import { Button, View } from 'react-native'
 
 const queryClient = new QueryClient()
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
+
+export const SigninContext = createContext<boolean>(false)
 
 export default function RootLayout() {
   const colorScheme = useColorScheme()
@@ -31,6 +39,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     auth().onAuthStateChanged(user => {
+      console.log('authChanged', user)
       if (user) {
         setIsLoggedIn(true)
       } else {
@@ -53,27 +62,22 @@ export default function RootLayout() {
     return null
   }
 
-  useEffect(() => {
-    router.replace(isLoggedIn ? '/in-nav' : '/out-nav')
-  }, [isLoggedIn])
+  // useEffect(() => {
+  //   router.replace(isLoggedIn ? '/in-nav' : '/out-nav')
+  // }, [isLoggedIn])
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider
-          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-        >
-          <Stack
-            screenOptions={{
-              headerShown: false
-            }}
+    <SigninContext.Provider value={isLoggedIn}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider
+            value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
           >
-            <Stack.Screen name="in-nav" />
-            <Stack.Screen name="out-nav" />
-          </Stack>
-          {/* {isLoggedIn ? <InNav /> : <OutNav />} */}
-        </ThemeProvider>
-      </QueryClientProvider>
-    </GestureHandlerRootView>
+            <Slot />
+            {/* {isLoggedIn ? <InNav /> : <OutNav />} */}
+          </ThemeProvider>
+        </QueryClientProvider>
+      </GestureHandlerRootView>
+    </SigninContext.Provider>
   )
 }
