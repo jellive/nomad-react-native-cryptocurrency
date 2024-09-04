@@ -27,8 +27,15 @@ export const Icon = styled.Image`
   margin-bottom: 10px;
 `
 
-const Coin = ({ symbol, index }: { symbol: string; index: number }) => {
-  const navigation = useNavigation() // react-navigation안에 있으므로.
+const Coin = ({
+  symbol,
+  index,
+  id
+}: {
+  symbol: string
+  index: number
+  id: string
+}) => {
   const opacity = useRef(new Animated.Value(0)).current
   useEffect(() => {
     Animated.spring(opacity, {
@@ -45,7 +52,7 @@ const Coin = ({ symbol, index }: { symbol: string; index: number }) => {
     <TouchableOpacity
       style={{ flex: 0.31 }}
       onPress={() =>
-        router.push({ pathname: '/in-nav/detail', params: { symbol } })
+        router.push({ pathname: '/in-nav/detail', params: { symbol, id } })
       }
     >
       <Wrapper style={{ opacity, transform: [{ scale }] }}>

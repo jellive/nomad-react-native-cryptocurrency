@@ -4,7 +4,7 @@ import { View } from 'react-native'
 import { SignInContext } from './_layout'
 
 const Index = () => {
-  const rootNavigationState = useRootNavigationState()
+  const rootNavigationState = useRootNavigationState() // 맨 초기 루트 뜨는 여부는 여기서 판별하면 됨.
   const isSignin = useContext(SignInContext)
   //   useEffect(() => {
   //     setTimeout(() => router.replace(isSignin ? '/in-nav' : '/out-nav'), 1)

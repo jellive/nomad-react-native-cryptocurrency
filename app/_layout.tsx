@@ -23,10 +23,8 @@ SplashScreen.preventAutoHideAsync()
 
 const RootLayout = () => {
   const colorScheme = useColorScheme()
-  // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
   const path = usePathname()
   const [isSignIn, setIsSignIn] = useState(false)
-  const [passed, setPassed] = useState(false)
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null)
   const rootIsReady = useRootNavigationState()
 
@@ -56,29 +54,10 @@ const RootLayout = () => {
   }, [loaded])
 
   useEffect(() => {
-    console.log('rootIsReady')
-    if (!rootIsReady?.key || passed || path !== '/') return
-
-    console.log('rootIsReady', rootIsReady?.key)
-
-    // console.log('rootIsReady: isloggedIn', isLoggedIn)
-    // if (rootIsReady?.routeNames?.includes('_sitemap'))
-    setPassed(true)
-
-    // return () => router.replace(user ? '/in-nav' : '/out-nav')
-  }, [rootIsReady?.key])
-
-  useEffect(() => {
-    console.log('user')
-    if (!passed) return
     if (path !== '/') {
       router.replace(user ? '/in-nav' : '/out-nav')
     }
   }, [user])
-
-  useEffect(() => {
-    console.log(passed)
-  }, [passed])
 
   if (!loaded) {
     return null
