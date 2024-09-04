@@ -44,7 +44,7 @@ const Coin = ({ symbol, index }: { symbol: string; index: number }) => {
   return (
     <TouchableOpacity
       style={{ flex: 0.31 }}
-      onPress={() => navigation.navigate('detail')}
+      onPress={() => router.push('/in-nav/detail')}
     >
       <Wrapper style={{ opacity, transform: [{ scale }] }}>
         <Icon

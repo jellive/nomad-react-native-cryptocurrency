@@ -25,4 +25,6 @@ const Home = () => {
   )
 }
 
+Home.presentation = 'fullscreenmodal'
+
 export default Home

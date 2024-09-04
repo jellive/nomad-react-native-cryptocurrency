@@ -17,13 +17,6 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 export default function OutNav() {
-  const colorScheme = useColorScheme()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  const [loaded] = useFonts({
-    SpaceMono: require('../../assets/fonts/SpaceMono-Regular.ttf')
-  })
-
   return (
     <Stack
       initialRouteName="index"
@@ -34,10 +27,6 @@ export default function OutNav() {
           backgroundColor: BLACK_COLOR
         }
       }}
-    >
-      <Stack.Screen name="Login" />
-      <Stack.Screen name="index" />
-      <Stack.Screen name="Join" />
-    </Stack>
+    />
   )
 }

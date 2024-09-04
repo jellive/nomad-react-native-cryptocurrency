@@ -5,7 +5,15 @@ import {
   useNavigation
 } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
-import { router, Slot, Stack } from 'expo-router'
+import {
+  Redirect,
+  router,
+  Slot,
+  Stack,
+  usePathname,
+  useRootNavigationState,
+  useSegments
+} from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import {
   createContext,
@@ -15,7 +23,7 @@ import {
   useState
 } from 'react'
 import 'react-native-reanimated'
-import auth, { signOut } from '@react-native-firebase/auth'
+import auth, { FirebaseAuthTypes, signOut } from '@react-native-firebase/auth'
 
 import { useColorScheme } from '@/hooks/useColorScheme'
 import { BLACK_COLOR } from '@/utils/colors'
@@ -23,7 +31,7 @@ import InNav from './in-nav/_layout'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import OutNav from './out-nav/index'
-import { Button, View } from 'react-native'
+import { Button, Platform, View } from 'react-native'
 
 const queryClient = new QueryClient()
 
@@ -34,11 +42,19 @@ export const SigninContext = createContext<boolean>(false)
 
 export default function RootLayout() {
   const colorScheme = useColorScheme()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const navigation = useNavigation()
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+  const segments = useSegments()
+  const rootIsReady = useRootNavigationState()
+  const path = usePathname()
+  const [passed, setPassed] = useState(false)
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null)
+  useEffect(() => {
+    console.log('path', path)
+  }, [])
 
   useEffect(() => {
     auth().onAuthStateChanged(user => {
+      setUser(user)
       console.log('authChanged', user)
       if (user) {
         setIsLoggedIn(true)
@@ -58,13 +74,26 @@ export default function RootLayout() {
     }
   }, [loaded])
 
+  useEffect(() => {
+    if (!rootIsReady?.key || passed) return
+
+    console.log('rootIsReady', rootIsReady?.key)
+
+    console.log('rootIsReady: isloggedIn', isLoggedIn)
+    // if (rootIsReady?.routeNames?.includes('_sitemap'))
+    setPassed(true)
+    router.replace(isLoggedIn ? '/in-nav' : '/out-nav')
+    // setTimeout(() => router.replace(isLoggedIn ? '/in-nav' : '/out-nav'), 1500)
+  }, [rootIsReady])
+
+  useEffect(() => {
+    if (!passed) return
+    router.replace(user ? '/in-nav' : '/out-nav')
+  }, [user])
+
   if (!loaded) {
     return null
   }
-
-  // useEffect(() => {
-  //   router.replace(isLoggedIn ? '/in-nav' : '/out-nav')
-  // }, [isLoggedIn])
 
   return (
     <SigninContext.Provider value={isLoggedIn}>
@@ -75,6 +104,7 @@ export default function RootLayout() {
           >
             <Slot />
             {/* {isLoggedIn ? <InNav /> : <OutNav />} */}
+            {/* <Redirect href={isLoggedIn ? '/in-nav' : '/out-nav'} /> */}
           </ThemeProvider>
         </QueryClientProvider>
       </GestureHandlerRootView>

@@ -8,10 +8,12 @@ import InNav from './in-nav/index'
 const Index = () => {
   const isSignin = useContext(SigninContext)
   console.log('isSignin', isSignin)
-  //   useCallback(() => {
-  //     router.replace(isSignin ? '/in-nav' : '/out-nav')
+
+  //   useEffect(() => {
+  //     setTimeout(() => router.replace(isSignin ? '/in-nav' : '/out-nav'), 1)
   //   }, [isSignin])
-  return isSignin ? <InNav /> : <OutNav />
+  //   return isSignin ? <InNav /> : <OutNav />
+  return <></>
   //   <Stack.Screen name="in-nav" />
 
   //   <Stack.Screen name="out-nav" />

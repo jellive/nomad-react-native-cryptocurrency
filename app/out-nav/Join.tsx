@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 import { ActivityIndicator, Alert, TextInput } from 'react-native'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
+import { useRouter } from 'expo-router'
 
 const Container = styled.View`
   background-color: ${BLACK_COLOR};
@@ -38,6 +39,7 @@ const Join = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
   const onSubmitEmailEditing = () => {
     passwordInput.current?.focus()
   }
@@ -55,6 +57,8 @@ const Join = () => {
           }
         }
       })
+    setLoading(false)
+    if (router.canDismiss()) router.dismissAll()
   }
 
   return (
